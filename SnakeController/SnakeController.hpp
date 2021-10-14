@@ -38,7 +38,7 @@ public:
     void receive(std::unique_ptr<Event> e) override;
 
 private:
-    std::unique_ptr<SnakeSegments> m_snakeSegments;
+    SnakeSegments m_snakeSegments;
     IPort& m_displayPort;
     IPort& m_foodPort;
     IPort& m_scorePort;
@@ -47,7 +47,6 @@ private:
     std::pair<int, int> m_foodPosition;
 
     std::list<Segment> m_segments;
-    Direction m_currentDirection;
 
     void handleTimeoutInd();
     void handleDirectionInd(std::unique_ptr<Event>);
