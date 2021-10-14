@@ -7,12 +7,16 @@
 
 #include "IEventHandler.hpp"
 #include "SnakeInterface.hpp"
+#include "SnakeSegments.hpp"
 
 class Event;
 class IPort;
 
 namespace Snake
 {
+
+struct Segment;
+
 struct ConfigurationError : std::logic_error
 {
     ConfigurationError();
@@ -34,18 +38,13 @@ public:
     void receive(std::unique_ptr<Event> e) override;
 
 private:
+    std::unique_ptr<SnakeSegments> m_snakeSegments;
     IPort& m_displayPort;
     IPort& m_foodPort;
     IPort& m_scorePort;
 
     std::pair<int, int> m_mapDimension;
     std::pair<int, int> m_foodPosition;
-
-    struct Segment
-    {
-        int x;
-        int y;
-    };
 
     std::list<Segment> m_segments;
     Direction m_currentDirection;

@@ -51,11 +51,13 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
                 throw ConfigurationError();
         }
         istr >> length;
-
+        auto m_snakeSegments = std::make_unique<SnakeSegments>();
         while (length--) {
             Segment seg;
             istr >> seg.x >> seg.y;
+            //workaround
             m_segments.push_back(seg);
+            m_snakeSegments->push_back(seg);
         }
     } else {
         throw ConfigurationError();
@@ -64,6 +66,7 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
 
 bool Controller::isSegmentAtPosition(int x, int y) const
 {
+    
     return m_segments.end() !=  std::find_if(m_segments.cbegin(), m_segments.cend(),
         [x, y](auto const& segment){ return segment.x == x and segment.y == y; });
 }
@@ -119,7 +122,7 @@ bool perpendicular(Direction dir1, Direction dir2)
 }
 } // namespace
 
-Controller::Segment Controller::calculateNewHead() const
+Segment Controller::calculateNewHead() const
 {
     Segment const& currentHead = m_segments.front();
 
